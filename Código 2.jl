@@ -75,4 +75,5 @@ function PCV(p,gasolina,cpl,io::IO = stdout)
         ç = @sprintf("| %2d                         | %17.15lf|     %10.4e       |", Solução[i], km, custo)
         println(io,ç)  
     end 
+    
 end
