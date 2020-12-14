@@ -47,12 +47,11 @@ function PCV(p,gasolina,cpl,io::IO = stdout)
     optimize!(f)
     km = 0.0
     custo = 0.0
-    (l,t) = size(x)
     MatrizX = JuMP.value.(x)
     Solução = Int[]
     push!(Solução, 1.0)#começamos considerando que o 1 é a empresa.
-    for i=1:l
-        indice = argmax(MatrizX[Solução[end],1:l])#argmax pega o indice que é exatamente do que preciso para definir de que cidade
+    for i=1:m
+        indice = argmax(MatrizX[Solução[end],1:m])#argmax pega o indice que é exatamente do que preciso para definir de que cidade
         #ele sai(no caso i) e chega( no caso j).
         if indice == Solução[1]# aqui é só para pular o primeiro elemento que é a empresa.
             break
@@ -60,7 +59,7 @@ function PCV(p,gasolina,cpl,io::IO = stdout)
             push!(Solução,indice)
         end
     end
-    if length(Solução) < l
+    if length(Solução) < m
         @constraint(f, sum(x[Solução,Solução]) <= length(Solução)-1)#Ultima restrição, ela garante que se causar uma sub-rota
         #ele ira restringir para que faça novamente o for mas com essa restrição estabelecida, que no caso se o tamanho da Solução for 
         #menor do que a quantidade de cidades(ocorreu sub-rota), a restrição faz a soma de todos os lementos de x e confere se
